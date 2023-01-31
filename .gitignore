@@ -3,3 +3,5 @@ vendor/
 .env
 .vscode
 .vs
+.DS_Store
+*.log
