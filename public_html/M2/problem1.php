@@ -9,7 +9,7 @@ function processArray($arr) {
     //note: use the $arr variable to iterate over, don't directly touch $a1-$a4
     //TODO add logic here to echo out only odd values -> Done.
     foreach($arr as $num) {         #use foreach loop to iterate over the $arr, each value is stored in $num
-        if($num % 2 == 0)           #use an if stmt to check if the number is even and print if it is
+        if(!($num % 2 == 0))           #use an if stmt to check if the number is odd(not even) and print if it is
             echo("$num<br>");
     }
 
