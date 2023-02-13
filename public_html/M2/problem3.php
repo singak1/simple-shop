@@ -19,8 +19,10 @@ function bePositive($arr) {
             echo(var_dump($num) . "<br>");
         }
         else{
+            $t = gettype($num);
             if($num < 0 )
-                $num = (string)abs($num);
+                $num = abs($num);
+            settype($num, "$t");
             echo(var_dump($num) . "<br>");
         }
     }
