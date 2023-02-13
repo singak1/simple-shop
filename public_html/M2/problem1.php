@@ -8,6 +8,9 @@ function processArray($arr) {
     echo "<br>Odds output:<br>";
     //note: use the $arr variable to iterate over, don't directly touch $a1-$a4
     //TODO add logic here to echo out only odd values -> Done.
+    /*ucid: as4234
+    date: 02-13-23
+    */
     foreach($arr as $num) {         #use foreach loop to iterate over the $arr, each value is stored in $num
         if(!($num % 2 == 0))           #use an if stmt to check if the number is odd(not even) and print if it is
             echo("$num<br>");

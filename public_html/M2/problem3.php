@@ -9,6 +9,9 @@ function bePositive($arr) {
     echo "<br>Positive output:<br>";
     //TODO use echo to output all of the values as positive (even if they were originally positive) 
     //hint: may want to use var_dump() to show final data types
+    /*ucid: as4234
+    date: 02-13-23
+    */
     foreach($arr as $num) { 
         if(is_integer($num) || is_float($num)){
             if($num < 0)
