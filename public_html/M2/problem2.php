@@ -9,7 +9,7 @@ function getTotal($arr) {
     //TODO do adding here
     /*ucid: as4234
     date: 02-13-23
-    */
+    */ 
     foreach($arr as $num) {
         $total+=$num;
     }

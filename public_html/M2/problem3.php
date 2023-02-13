@@ -11,7 +11,7 @@ function bePositive($arr) {
     //hint: may want to use var_dump() to show final data types
     /*ucid: as4234
     date: 02-13-23
-    */
+    */ 
     foreach($arr as $num) { 
         if(is_integer($num) || is_float($num)){
             if($num < 0)
