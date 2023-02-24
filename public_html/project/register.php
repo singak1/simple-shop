@@ -1,3 +1,6 @@
+<?php
+    require_once(__DIR__."/../../lib/functions.php");
+?>
 <form onsubmit="return validate(this)" method="POST">
     <div>
         <label for="email">Email</label>
@@ -24,9 +27,33 @@
 <?php
  //TODO 2: add PHP Code
  if(isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm"])) {
-    $email = $_POST["email"];
-    $password = $_POST["password"];
-    $confirm = $_POST["confirm"];
+    $email = se($_POST, "email", "", false); //$_POST["email"];
+    $password = se($_POST, "password", "", false); // $_POST["password"];
+    $confirm = se($_POST, "confirm", "", false); //$_POST["confirm"];
     //TODO 3
+    $hasError = false;
+    if(empty($email)) {
+        $hasError = true;
+        echo "Email must be provided <br>";
+    }
+    if(empty($password)) {
+        $hasError = true;
+        echo "Password must be provided <br>";
+    }
+    if(empty($confirm)) {
+        $hasError = true;
+        echo "Confirm password must be provided <br>";
+    }
+    if(strlen($password) < 8){
+        $hasError = true;
+        echo "Password must be atleast 8 characters long <br>";
+    }
+    if(strlen($password) > 0 && $password !== $confirm) {
+        $hasError = true;
+        echo "Passwords must match <br>";
+    }
+    if(!$hasError) {
+        echo "Welcome, $email";
+    }
  }
 ?>
