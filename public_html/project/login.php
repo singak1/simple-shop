@@ -60,6 +60,10 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                     unset($user["password"]);
                     if (password_verify($password, $hash)) {
                         echo "Welcome $email";
+                        //dumping the user entity in to our session
+                        $_SESSION["user"] = $user;
+                        //Kill the script as soon as we are redirected
+                        die(header("Location: home.php"));
                     } else {
                         echo "Invalid password";
                     }
