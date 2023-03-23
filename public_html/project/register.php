@@ -37,9 +37,14 @@
         echo "Email must be provided <br>";
     }
     //sanitize email input
-    $email = filter_var($email, FILTER_VALIDATE_EMAIL);
+    //$email = filter_var($email, FILTER_VALIDATE_EMAIL);
+    $email = sanitize_email($email);
     //validate the sanitized email input
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    /*if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo "Please enter a valid email address <br>";
+        $hasError = true;
+    }*/
+    if(!is_valid_email($email)){
         echo "Please enter a valid email address <br>";
         $hasError = true;
     }

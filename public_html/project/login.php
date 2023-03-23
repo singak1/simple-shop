@@ -33,9 +33,9 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         $hasError = true;
     }
     //sanitize
-    $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+    $email = sanitize_email($email);
     //validate
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if (!is_valid_email($email)) {
         echo "Invalid email address";
         $hasError = true;
     }
@@ -59,10 +59,8 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                     $hash = $user["password"];
                     unset($user["password"]);
                     if (password_verify($password, $hash)) {
-                        echo "Welcome $email";
-                        //dumping the user entity in to our session
+                        echo "Weclome $email";
                         $_SESSION["user"] = $user;
-                        //Kill the script as soon as we are redirected
                         die(header("Location: home.php"));
                     } else {
                         echo "Invalid password";
