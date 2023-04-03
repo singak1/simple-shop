@@ -13,11 +13,21 @@
 .alert-info {
     background-color: teal;
 }
-nav li{display: inline; background-color: rebeccapurple;}
-nav li a{color: hotpink}
-input{border-radius: 50%;}
-body{
-    background-color: hotpink;
-    color: rgb(153, 0, 153);
 
+nav li{display: inline; }
+nav li a{
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 10px;
+    transition: all 0.2s ease-in-out;
+    border-radius: 5%;
+}
+nav li a:hover{background-color: #6c757d; color: #fff;}
+input{border-radius: 5%; border: 2px solid #bbb;}
+body{
+    font-family: 'Open Sans', sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
 }
