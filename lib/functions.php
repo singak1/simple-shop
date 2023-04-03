@@ -21,4 +21,6 @@ require(__DIR__ . "/user_helpers.php");
 require(__DIR__."/duplicate_user_details.php");
 //reset session
 require(__DIR__."/reset_session.php");
+//setup for creating an admin group
+require(__DIR__. "/get_url.php");
 ?>
