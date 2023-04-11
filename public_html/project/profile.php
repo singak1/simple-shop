@@ -156,11 +156,13 @@ $username = get_username();
             flash("Password and Confrim password must match", "warning");
             isValid = false;
         }
-        
-        if(!pattern.test(pw)) {
+        if(pw.length !== 0 ){ 
+        if(!/.{8,}/.test(pw)) {
                 flash("Password is too short", "danger");
                 isValid = false;
         }
+    }
+        console.log("isValid ki Value: " + isValid);
         return isValid;
     }
 </script>
