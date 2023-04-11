@@ -39,7 +39,7 @@ require(__DIR__ . "/../../partials/nav.php");
             }
         }
 
-        if(empty(pw)) {
+        if(pw.length === 0) {
             flash("Please provide a password", "info");
             return false;
         }
