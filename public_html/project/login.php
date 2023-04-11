@@ -16,7 +16,40 @@ require(__DIR__ . "/../../partials/nav.php");
     function validate(form) {
         //TODO 1: implement JavaScript validation
         //ensure it returns false for an error and true for success
+        let pw = form.password.value;
+        let em_un = form.email.value;
 
+        if(em_un.length === 0 ) {
+            flash("Please provide email/username", "info");
+            return false;
+        }
+
+        if(em_un.includes("@")){
+            const pattern = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})*$/;
+            if(!pattern.test(em_un)) {
+                flash("Email is invalid", "info");
+                return false;
+            }
+        }
+        else {
+            const pattern = /^[a-z0-9_-]{3,16}$/;
+            if (!pattern.test(em_un)) {
+                flash("Username is invalid", "info");
+                return false;
+            }
+        }
+
+        if(empty(pw)) {
+            flash("Please provide a password", "info");
+            return false;
+        }
+        else {
+            const pattern = /.{8,}/;
+            if(!pattern.test(pw)) {
+                flash("Password is too short", "info");
+                return false;
+            }
+        }
         //TODO update clientside validation to check if it should
         //valid email or username
         return true;
