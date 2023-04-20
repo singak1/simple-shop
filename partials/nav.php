@@ -43,6 +43,9 @@ session_start();
             <li><a href="<?php echo get_url('admin/assign_roles.php'); ?>">Assign Roles</a></li>
             <li><a href="<?php echo get_url('admin/add_item.php'); ?>">Add Item</a></li>
         <?php endif; ?>
+        <?php if (has_role("Shop Owner")) : ?>
+            <li><a href="<?php echo get_url('admin/add_item.php'); ?>">Add Item</a></li>
+        <?php endif; ?>
         <?php if (is_logged_in()) : ?>
             <li><a href="<?php echo get_url('logout.php'); ?>">Logout</a></li>
         <?php endif; ?>
