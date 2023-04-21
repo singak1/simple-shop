@@ -4,30 +4,21 @@ require(__DIR__. "/../../partials/nav.php");
 $results = [];
 $db = getDB();
 $categoryFilter = $_GET['category'] ?? '';
-$stmt = $db->prepare("SELECT id, name, description, category, stock, unit_price FROM Products WHERE visibility = 'true' LIMIT 10");
-try {
-    $stmt->execute();
-    $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    if($r) {
-        $results = $r;
-    }
-} catch(PDOException $e) {
-    error_log(var_export($e, true));
-    flash("Error fetching items", "danger");
-}
-
-$categoryFilter = $_GET['category'] ?? '';
-
-// Fetch items from the database with category and name filter
-$results = [];
-$db = getDB();
-$categoryFilter = $_GET['category'] ?? '';
 $nameFilter = $_GET['name'] ?? '';
+$sort = $_GET['sort'] ?? ''; // Added sort parameter
+
+// Updated query to include filter and sort
 $stmt = $db->prepare("SELECT id, name, description, category, stock, unit_price FROM Products WHERE visibility = 'true' 
                       AND (:categoryFilter = '' OR category = :categoryFilter) 
-                      AND (:nameFilter = '' OR name LIKE :nameFilter) LIMIT 10");
+                      AND (:nameFilter = '' OR name LIKE :nameFilter) 
+                      ORDER BY CASE
+                        WHEN :sort = 'ASC' THEN unit_price
+                        WHEN :sort = 'DESC' THEN unit_price * -1
+                        ELSE id
+                      END LIMIT 10"); // Added ORDER BY clause for sorting
 $stmt->bindParam(':categoryFilter', $categoryFilter);
 $stmt->bindParam(':nameFilter', $nameFilter);
+$stmt->bindParam(':sort', $sort); // Bind sort parameter
 $nameFilter = '%' . $nameFilter . '%'; // Add wildcards for partial matching
 try {
     $stmt->execute();
@@ -44,9 +35,9 @@ try {
 <script>
     //TODO ADD CART LOGIC HERE
 </script>
-<div class="container-fluid row justify-content-end col-md-3 ms-auto">
+<div class="container-fluid row justify-content-end col-md-4 ms-auto">
     <form method="GET" action="shop.php" class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <label for="category">Filter by Category:</label>
             <select id="category" name="category" onchange="this.form.submit()" class="form-control">
                 <option value="">All</option>
@@ -60,9 +51,17 @@ try {
                 ?>
             </select>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <label for="name">Filter by Name:</label>
             <input type="text" id="name" name="name" value="<?php echo $_GET['name'] ?? ''; ?>" class="form-control">
+        </div>
+        <div class="col-md-4">
+            <label for="sort">Sort by Price:</label>
+            <select id="sort" name="sort" onchange="this.form.submit()" class="form-control">
+                <option value="">None</option>
+                <option value="ASC" <?php echo ($_GET['sort'] ?? '') === 'ASC' ? 'selected' : ''; ?>>Low to High</option>
+                <option value="DESC" <?php echo ($_GET['sort'] ?? '') === 'DESC' ? 'selected' : ''; ?>>High to Low</option>
+            </select>
         </div>
         <div class="col-md-12 mt-3">
             <button type="submit" class="btn btn-primary">Apply Filters</button>
@@ -70,6 +69,8 @@ try {
         </div>
     </form>
 </div>
+
+
 <script>
     function clearFilters() {
     document.getElementById('category').selectedIndex = 0; // Reset category filter
