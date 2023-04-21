@@ -18,12 +18,17 @@ try {
 
 $categoryFilter = $_GET['category'] ?? '';
 
-// Fetch items from the database with category filter
+// Fetch items from the database with category and name filter
 $results = [];
 $db = getDB();
+$categoryFilter = $_GET['category'] ?? '';
+$nameFilter = $_GET['name'] ?? '';
 $stmt = $db->prepare("SELECT id, name, description, category, stock, unit_price FROM Products WHERE visibility = 'true' 
-                      AND (:categoryFilter = '' OR category = :categoryFilter) LIMIT 10");
+                      AND (:categoryFilter = '' OR category = :categoryFilter) 
+                      AND (:nameFilter = '' OR name LIKE :nameFilter) LIMIT 10");
 $stmt->bindParam(':categoryFilter', $categoryFilter);
+$stmt->bindParam(':nameFilter', $nameFilter);
+$nameFilter = '%' . $nameFilter . '%'; // Add wildcards for partial matching
 try {
     $stmt->execute();
     $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -34,26 +39,43 @@ try {
     error_log(var_export($e, true));
     flash("Error fetching items", "danger");
 }
+
+// Logic to clear filters
+if (isset($_GET['clear_filters'])) {
+    header('Location: shop.php');
+    exit();
+}
 ?>
 <script>
     //TODO ADD CART LOGIC HERE
 </script>
 <div class="container-fluid row justify-content-end col-md-3 ms-auto">
-    <form method="GET" action="shop.php">
-        <label for="category">Filter by Category:</label>
-        <select id="category" name="category" onchange="this.form.submit()" class="form-control">
-            <option value="">All</option>
-            <!-- Fetch and display available categories dynamically -->
-            <?php
-                $categories = array_unique(array_column($results, 'category'));
-                foreach ($categories as $category) {
-                    $selected = ($_GET['category'] ?? '') === $category ? 'selected' : '';
-                    echo "<option value='$category' $selected>$category</option>";
-                }
-            ?>
-        </select>
+    <form method="GET" action="shop.php" class="row">
+        <div class="col-md-6">
+            <label for="category">Filter by Category:</label>
+            <select id="category" name="category" onchange="this.form.submit()" class="form-control">
+                <option value="">All</option>
+                <!-- Fetch and display available categories dynamically -->
+                <?php
+                    $categories = array_unique(array_column($results, 'category'));
+                    foreach ($categories as $category) {
+                        $selected = ($_GET['category'] ?? '') === $category ? 'selected' : '';
+                        echo "<option value='$category' $selected>$category</option>";
+                    }
+                ?>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="name">Filter by Name:</label>
+            <input type="text" id="name" name="name" value="<?php echo $_GET['name'] ?? ''; ?>" class="form-control">
+        </div>
+        <div class="col-md-12 mt-3">
+            <button type="submit" class="btn btn-primary">Apply Filters</button>
+            <a href="shop.php?clear_filters=1" class="btn btn-secondary">Clear Filters</a>
+        </div>
     </form>
 </div>
+
 <div class="container-fluid">
     <h1>Shop</h1>
     <div class="row row-cols-1 row-cols-md-5 g-4">
