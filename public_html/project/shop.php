@@ -40,11 +40,6 @@ try {
     flash("Error fetching items", "danger");
 }
 
-// Logic to clear filters
-if (isset($_GET['clear_filters'])) {
-    header('Location: shop.php');
-    exit();
-}
 ?>
 <script>
     //TODO ADD CART LOGIC HERE
@@ -71,11 +66,17 @@ if (isset($_GET['clear_filters'])) {
         </div>
         <div class="col-md-12 mt-3">
             <button type="submit" class="btn btn-primary">Apply Filters</button>
-            <a href="shop.php?clear_filters=1" class="btn btn-secondary">Clear Filters</a>
+            <input type="reset" value="Clear Filter" class="btn btn-secondary" onclick="clearFilters()">
         </div>
     </form>
 </div>
-
+<script>
+    function clearFilters() {
+    document.getElementById('category').selectedIndex = 0; // Reset category filter
+    document.getElementById('name').value = ''; // Reset name filter
+    document.forms[0].submit(); // Submit the form
+    }
+</script>
 <div class="container-fluid">
     <h1>Shop</h1>
     <div class="row row-cols-1 row-cols-md-5 g-4">
