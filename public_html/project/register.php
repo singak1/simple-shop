@@ -2,9 +2,9 @@
 require(__DIR__ . "/../../partials/nav.php");
 reset_session();
 ?>
-<div class="container">
+<div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-5">
             <h3>Register</h3>
             <form onsubmit="return validate(this)" method="POST">
                 <div class="mb-3">

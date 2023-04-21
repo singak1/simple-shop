@@ -1,9 +1,9 @@
 <?php
 require(__DIR__ . "/../../partials/nav.php");
 ?>
-<div class="container ">
+<div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-5">
             <form onsubmit="return validate(this)" method="POST">
                 <div class="mb-3">
                     <label class="form-label" for="email">Email/Username</label>
