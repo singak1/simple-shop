@@ -25,11 +25,21 @@ if(!empty($action)) {
             }
             break;
         case "update":
-            $query = "UPDATE Cart SET desired_quantity = :dq WHERE id = :cid AND user_id = :uid";
-            $stmt = $db->prepare($query);
-            $stmt->bindValue(":dq", se($_POST, "desired_quantity", 0, false), PDO::PARAM_INT);
-            $stmt->bindValue(":cid", se($_POST, "cart_id", 0, false), PDO::PARAM_INT);
-            $stmt->bindValue(":uid", get_user_id(), PDO::PARAM_INT);
+            $des_quan = (int)se($_POST, "desired_quantity", 0, false);
+            if($des_quan == 0){
+                $query = "DELETE FROM Cart WHERE id = :cid AND user_id = :uid";
+                $stmt = $db->prepare($query);
+                $stmt->bindValue(":cid", se($_POST, "cart_id", 0, false), PDO::PARAM_INT);
+                $stmt->bindValue(":uid", get_user_id(), PDO::PARAM_INT);
+            }
+            else {
+                $query = "UPDATE Cart SET desired_quantity = :dq WHERE id = :cid AND user_id = :uid";
+                $stmt = $db->prepare($query);
+                $des_quan = (int)se($_POST, "desired_quantity", 0, false);
+                $stmt->bindValue(":dq", se($_POST, "desired_quantity", 0, false), PDO::PARAM_INT);
+                $stmt->bindValue(":cid", se($_POST, "cart_id", 0, false), PDO::PARAM_INT);
+                $stmt->bindValue(":uid", get_user_id(), PDO::PARAM_INT);
+            }
             try{
                 $stmt->execute();
                 flash("Cart updated successfully", "success");
@@ -83,7 +93,7 @@ try {
                     <form method="POST">
                         <input type="hidden" name="cart_id" value="<?php se($c, "id"); ?>" />
                         <input type="hidden" name="action" value="update" />
-                        <input type="number" name="desired_quantity" value="<?php se($c, "desired_quantity"); ?>" min="1" max="<?php se($c, "stock"); ?>" />
+                        <input type="number" name="desired_quantity" value="<?php se($c, "desired_quantity"); ?>" min="0" max="<?php se($c, "stock"); ?>" />
                         <input type="submit" class="btn btn-primary" value="Update Quantity" />
                     </form>
                 </td>
