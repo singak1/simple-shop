@@ -56,3 +56,6 @@ function map_column($col)
         <input class="btn btn-primary" type="submit" value="Update" name="submit" />
     </form>
 </div>
+<?php
+//note we need to go up 1 more directory
+require_once(__DIR__ . "/../../../partials/footer.php");
