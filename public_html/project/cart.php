@@ -61,6 +61,18 @@ if(!empty($action)) {
                 flash("Error removing item from cart", "danger");
             }
             break;
+        case "clear":
+            $query = "DELETE FROM Cart WHERE user_id = :uid";
+            $stmt = $db->prepare($query);
+            $stmt->bindValue(":uid", get_user_id(), PDO::PARAM_INT);
+            try{
+                $stmt->execute();
+                flash("All items removed from cart successfully", "success");
+            } catch(PDOException $e) {
+                error_log(var_export($e, true));
+                flash("Error removing item from cart", "danger");
+            }
+            break;
     }
 }
 
@@ -131,6 +143,10 @@ try {
         </tr>
         </tbody>
     </table>
+    <form method="POST">
+        <input type="hidden" name="action" value="clear" />
+        <input type="submit" class="btn btn-danger" value="Clear Cart" />
+    </form>
 </div>
 <?php
 require(__DIR__ . "/../../partials/footer.php");
