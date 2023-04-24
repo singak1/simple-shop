@@ -69,9 +69,12 @@ session_start();
                         </ul>
                     </li>
                 <?php endif; ?>
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <?php if (is_logged_in()) : ?>
                     <li class="nav-item"><a class="nav-link" href="<?php echo get_url('logout.php'); ?>">Logout</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo get_url('cart.php'); ?>">Cart</a></li>
                 <?php endif; ?>
+                </ul>
             </ul>
         </div>
     </div>
