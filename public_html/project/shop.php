@@ -14,7 +14,7 @@ $stmt = $db->prepare("SELECT id, name, description, category, stock, unit_price 
                       ORDER BY CASE
                         WHEN :sort = 'ASC' THEN unit_price
                         WHEN :sort = 'DESC' THEN unit_price * -1
-                        ELSE id
+                        ELSE modified * -1
                       END LIMIT 10"); // Added ORDER BY clause for sorting
 $stmt->bindParam(':categoryFilter', $categoryFilter);
 $stmt->bindParam(':nameFilter', $nameFilter);
@@ -75,12 +75,13 @@ try {
     function clearFilters() {
     document.getElementById('category').selectedIndex = 0; // Reset category filter
     document.getElementById('name').value = ''; // Reset name filter
+    document.getElementById('sort').value = '';
     document.forms[0].submit(); // Submit the form
     }
 </script>
 <div class="container-fluid">
     <h1>Shop</h1>
-    <div class="row row-cols-1 row-cols-md-5 g-4">
+    <div class="row row-cols-1 row-cols-md-5 g-4" >
         <?php foreach ($results as $item) : ?>
             <div class="col">
                 <div class="card bg-light">
