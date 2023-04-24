@@ -35,7 +35,7 @@ if(isset($_GET["id"])) {
                 <p>No results to show</p>
             <?php else : ?>
             <div class="row">
-                <div class="col-md-6 row justify-content-center">
+                <div class="col row justify-content-center">
                     <h4 class="mt-2 mb-2"><?php echo $product['name']; ?></h4>
                     <p><strong>Description:</strong> <?php echo $product['description']; ?></p>
                     <p><strong>Category:</strong> <?php echo $product['category']; ?></p>
