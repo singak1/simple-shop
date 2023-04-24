@@ -70,7 +70,6 @@ try {
     </form>
 </div>
 
-
 <script>
     function clearFilters() {
     document.getElementById('category').selectedIndex = 0; // Reset category filter
@@ -79,6 +78,7 @@ try {
     document.forms[0].submit(); // Submit the form
     }
 </script>
+
 <div class="container-fluid">
     <h1>Shop</h1>
     <div class="row row-cols-1 row-cols-md-5 g-4" >
@@ -86,11 +86,12 @@ try {
             <div class="col">
                 <div class="card bg-light">
                     <div class="card-header">
-                        Product Placeholder
+                    <a href="product_details.php?id=<?php se($item, "id") ?>" class="stretched-link">Product Placeholder</a>
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">Name: <?php se($item, "name"); ?></h5>
                         <p class="card-text">Description: <?php se($item, "description"); ?></p>
+                        <p class="card-text">ID: <?php se($item, "id"); ?></p>
                     </div>
                     <div class="card-footer">
                         Cost: <?php se($item, "unit_price"); ?>
