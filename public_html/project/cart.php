@@ -48,6 +48,19 @@ if(!empty($action)) {
                 flash("Error updating the cart", "danger");
             }
             break;
+        case "delete":
+            $query = "DELETE FROM Cart WHERE id = :cid AND user_id = :uid";
+            $stmt = $db->prepare($query);
+            $stmt->bindValue(":cid", se($_POST, "cart_id", 0, false), PDO::PARAM_INT);
+            $stmt->bindValue(":uid", get_user_id(), PDO::PARAM_INT);
+            try{
+                $stmt->execute();
+                flash("Item successfully removed from cart", "success");
+            } catch(PDOException $e) {
+                error_log(var_export($e, true));
+                flash("Error removing item from cart", "danger");
+            }
+            break;
     }
 }
 
