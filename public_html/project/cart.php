@@ -24,6 +24,20 @@ if(!empty($action)) {
                 flash("Error adding item to cart", "danger");
             }
             break;
+        case "update":
+            $query = "UPDATE Cart SET desired_quantity = :dq WHERE id = :cid AND user_id = :uid";
+            $stmt = $db->prepare($query);
+            $stmt->bindValue(":dq", se($_POST, "desired_quantity", 0, false), PDO::PARAM_INT);
+            $stmt->bindValue(":cid", se($_POST, "cart_id", 0, false), PDO::PARAM_INT);
+            $stmt->bindValue(":uid", get_user_id(), PDO::PARAM_INT);
+            try{
+                $stmt->execute();
+                flash("Cart updated successfully", "success");
+            } catch(PDOException $e) {
+                error_log(var_export($e, true));
+                flash("Error updating the cart", "danger");
+            }
+            break;
     }
 }
 
