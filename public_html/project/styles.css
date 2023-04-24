@@ -24,3 +24,7 @@ nav li a{
     transition: all 0.2s ease-in-out;
     border-radius: 5%;
 }
+.card .btn {
+    z-index: 2;         /*"Raise" the button to avoid the streched link*/
+    position: relative;
+ }
