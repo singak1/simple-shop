@@ -122,7 +122,7 @@ try {
                     <form method="POST">
                         <input type="hidden" name="cart_id" value="<?php se($c, "id"); ?>" />
                         <input type="hidden" name="action" value="update" />
-                        <input type="number" name="desired_quantity" value="<?php se($c, "desired_quantity"); ?>" max="<?php se($c, "stock"); ?>" />
+                        <input type="number" name="desired_quantity" value="<?php se($c, "desired_quantity"); ?>" min="0" max="<?php se($c, "stock"); ?>" />
                         <input type="submit" class="btn btn-primary" value="Update Quantity" />
                     </form>
                 </td>
