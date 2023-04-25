@@ -99,6 +99,9 @@ try {
                             <input type="hidden" name="action" value="add"/>
                             <input type="number" class="quantity" name="desired_quantity" value="1" min="1" max="<?php se($item, "stock");?>"/>
                             <input type="submit" class="btn btn-primary" value="Add to Cart"/>
+                            <?php if (has_role("Shop Owner") || has_role("Admin")) : ?>
+                                <a class="btn btn-primary" href="admin/edit_products.php?id=<?php se($item, "id"); ?>">Edit</a>
+                            <?php endif ?>
                         </form>
                     </div>
                 </div>
