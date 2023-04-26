@@ -93,7 +93,11 @@ try {
                         <p class="card-text">Description: <?php se($item, "description"); ?></p>
                     </div>
                     <div class="card-footer">
-                        Cost: <?php se($item, "unit_price"); ?>
+                    <?php 
+                        $price = (int)se($item, "unit_price", 0, false);
+                        $price = cost_to_float($price);
+                    ?>
+                        Cost: $<?php se($price, null, 0); ?>
                         <form method="POST" action="cart.php">
                             <input type="hidden" name="product_id" value="<?php se($item, "id");?>"/>
                             <input type="hidden" name="action" value="add"/>
