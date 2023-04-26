@@ -103,7 +103,8 @@ try {
 <div class="container-fluid">
     <h1>Cart</h1>
     <table class="table table-striped">
-        <?php $total = 0; ?>
+        <?php $total = 0; 
+              $total_items = 0;?>
         <thead>
             <tr>
                 <th>Item</th>
@@ -126,7 +127,8 @@ try {
                         <input type="submit" class="btn btn-primary" value="Update Quantity" />
                     </form>
                 </td>
-                <?php $total += (int)se($c, "subtotal", 0, false); ?>
+                <?php $total += (int)se($c, "subtotal", 0, false); 
+                      $total_items += (int)se($c, "desired_quantity", 0, false); ?>
                 <td><?php se($c, "subtotal"); ?></td>
                 <td>
                     <form method="POST">
@@ -147,10 +149,13 @@ try {
         </tr>
         </tbody>
     </table>
-    <form method="POST">
-        <input type="hidden" name="action" value="clear" />
-        <input type="submit" class="btn btn-danger" value="Clear Cart" />
-    </form>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <form method="POST">
+            <input type="hidden" name="action" value="clear" />
+            <input type="submit" class="btn btn-danger" value="Clear Cart" />
+            <input type="submit" class="btn btn-warning" value="Proceed to Checkout(<?php se($total_items, null, 0); ?> Items)" />
+        </form>
+    </div>
 </div>
 <?php
 require(__DIR__ . "/../../partials/footer.php");
