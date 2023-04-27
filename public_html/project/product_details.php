@@ -43,7 +43,7 @@ if(isset($_GET["id"])) {
                     <p><strong>Unit Price:</strong> <?php echo $product['unit_price']; ?></p>
                     <a href="shop.php" class="btn btn-primary mb-2">Back to Shop</a>
                     <?php if (has_role("Shop Owner") || has_role("Admin")) : ?>
-                        <a class="btn btn-primary mb-2" href="admin/edit_products.php?id=<?php se($item, "id"); ?>">Edit</a>
+                        <a class="btn btn-primary mb-2" href="admin/edit_products.php?id=<?php echo $product['id']; ?>">Edit</a>
                     <?php endif ?>
                 </div>
             </div>

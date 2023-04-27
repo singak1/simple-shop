@@ -8,7 +8,7 @@ if(!is_logged_in()) {
 }
 
 $db = getDB();
-$query = "SELECT cart.id, product.name, product.stock, cart.unit_price, cart.product_id, (cart.unit_price * cart.desired_quantity) as subtotal, cart.desired_quantity
+$query = "SELECT cart.id, product.name, product.stock, cart.unit_price, cart.product_id, product.unit_price as product_price, (cart.unit_price * cart.desired_quantity) as subtotal, cart.desired_quantity
           FROM Products as product JOIN Cart as cart on cart.product_id = product.id
           WHERE cart.user_id = :uid";
 $stmt = $db->prepare($query);
@@ -57,8 +57,25 @@ try {
                       $total += (int)se($c, "subtotal", 0, false); 
                       $total_items += (int)se($c, "desired_quantity", 0, false); 
                       $total_cost = cost_to_float($total);
-                      $sub_total = cost_to_float($sub_total); ?>
-                <td>$<?php se($sub_total, null, 0); ?></td>
+                      $sub_total = cost_to_float($sub_total); 
+                     
+                      $unit_price = (int)(se($c, "unit_price", 0, false));
+                      $product_price = ((int)(se($c, "product_price", 0, false)));
+                      echo '<script>console.log(' . $product_price . ')</script>';
+                      if ($product_price != 0) {
+                        $price_diff = ($unit_price - $product_price) / $product_price * 100;
+                      } else {
+                        $price_diff = 0;
+                      }
+                ?>
+                <td>$<?php se($sub_total, null, 0); ?>
+                    <?php if ($price_diff != 0) {
+                        echo("(");
+                        se(round($price_diff, 2));
+                        echo("%)");
+                        } 
+                    ?>
+                </td>
             </tr>
         <?php endforeach; ?>
         <?php if (count($cart) == 0) : ?>
