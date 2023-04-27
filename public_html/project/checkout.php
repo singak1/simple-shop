@@ -88,6 +88,9 @@ try {
         </tr>
         </tbody>
     </table>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <a class="btn btn-primary" href="cart.php" >Back to Cart</a>
+    </div>
 </div>
 <?php
 require(__DIR__ . "/../../partials/footer.php");
