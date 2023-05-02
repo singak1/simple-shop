@@ -61,7 +61,6 @@ try {
                      
                       $unit_price = (int)(se($c, "unit_price", 0, false));
                       $product_price = ((int)(se($c, "product_price", 0, false)));
-                      echo '<script>console.log(' . $product_price . ')</script>';
                       if ($product_price != 0) {
                         $price_diff = ($unit_price - $product_price) / $product_price * 100;
                       } else {

@@ -8,7 +8,7 @@ $nameFilter = $_GET['name'] ?? '';
 $sort = $_GET['sort'] ?? ''; // Added sort parameter
 
 // Updated query to include filter and sort
-$stmt = $db->prepare("SELECT id, name, description, category, stock, unit_price FROM Products WHERE visibility = 'true' 
+$stmt = $db->prepare("SELECT id, name, description, category, stock, unit_price FROM Products WHERE visibility = 'true'  AND stock > 0
                       AND (:categoryFilter = '' OR category = :categoryFilter) 
                       AND (:nameFilter = '' OR name LIKE :nameFilter) 
                       ORDER BY CASE

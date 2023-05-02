@@ -156,9 +156,11 @@ try {
                 <td colspan="100%">No items in cart</td>
             </tr>
         <?php endif; ?>
+        <?php if (count($cart) != 0) : ?>
         <tr>
             <td colspan="100%">Total: $<?php se($total_cost, null, 0); ?></td>
         </tr>
+        <?php endif; ?>
         </tbody>
     </table>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
