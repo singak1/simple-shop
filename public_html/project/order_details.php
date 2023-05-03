@@ -16,12 +16,12 @@ $query = "SELECT Orders.id as orderid, total_price, address, payment_method, mon
 $db = getDB();
 
 try {
-    if (!has_role("Admin")) {
+    if (!has_role("Admin") && !has_role("Shop Owner")) {
         $query .= " AND Orders.user_id = :uid";
     }
     $stmt = $db->prepare($query);
     $stmt->bindValue(":oid", $orderId, PDO::PARAM_INT);
-    if (!has_role("Admin")) {
+    if (!has_role("Admin") && !has_role("Shop Owner")) {
         $stmt->bindValue(":uid", get_user_id(), PDO::PARAM_INT);
     }
     $stmt->execute();

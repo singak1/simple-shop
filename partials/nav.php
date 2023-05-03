@@ -68,6 +68,7 @@ session_start();
                         <ul class="dropdown-menu bg-info-subtle" aria-labelledby="ShopOwnerDropdown">
                             <li><a class="dropdown-item" href="<?php echo get_url('admin/add_item.php'); ?>">Add Item</a></li>
                             <li><a class="dropdown-item" href="<?php echo get_url('admin/list_products.php'); ?>">List Products</a></li>
+                            <li><a class="dropdown-item" href="<?php echo get_url('admin/store_order_history.php'); ?>">Shop Purchase History</a></li>
                         </ul>
                     </li>
                 <?php endif; ?>
