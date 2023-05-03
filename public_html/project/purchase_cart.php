@@ -120,6 +120,7 @@ try{
     }
     if ($next_order_id) {
         $db->commit();
+        header("Location: $BASE_PATH/order_confirmation.php");
     }
 }
 } catch (PDOException $e) {
