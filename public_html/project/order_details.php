@@ -11,15 +11,19 @@ $orderId = $_GET["orderid"];
 $query = "SELECT Orders.id as orderid, total_price, address, payment_method, money_recieved, first_name, last_name, item.product_id, item.quantity, item.unit_price, Products.name AS product_name
           FROM Orders JOIN OrderItems as item on item.order_id = Orders.id 
           JOIN Products ON Products.id = item.product_id
-          WHERE Orders.id = :oid AND Orders.user_id = :uid
-          ORDER BY Orders.id DESC";
+          WHERE Orders.id = :oid";
 
 $db = getDB();
 
 try {
+    if (!has_role("Admin") && !has_role("Shop Owner")) {
+        $query .= " AND Orders.user_id = :uid";
+    }
     $stmt = $db->prepare($query);
     $stmt->bindValue(":oid", $orderId, PDO::PARAM_INT);
-    $stmt->bindValue(":uid", get_user_id(), PDO::PARAM_INT);
+    if (!has_role("Admin") && !has_role("Shop Owner")) {
+        $stmt->bindValue(":uid", get_user_id(), PDO::PARAM_INT);
+    }
     $stmt->execute();
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     if ($results) {
@@ -43,10 +47,15 @@ try {
         }
         $order['items'] = $items;
     }
+    if (empty($results)) {
+        flash("Cannot view order details for this order", "warning");
+        header("Location: $BASE_PATH/shop.php");
+        exit;
+    }
 } catch (PDOException $e) {
     error_log(var_export($e, true));
     flash("Cannot view order details for this order", "warning");
-    header("Location: $BASE_PATH/Shop.php");
+    header("Location: $BASE_PATH/shop.php");
     exit;
 }
 ?>
