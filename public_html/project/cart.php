@@ -2,7 +2,10 @@
 
 require(__DIR__. "/../../partials/nav.php");
 
-is_logged_in(true);
+if(!is_logged_in()) {
+    flash("Please log in to continue!", "warning");
+    die(header("Location: $BASE_PATH/login.php"));
+}
 
 $action = strtolower(trim(se($_POST, "action", "", false)));
 if(!empty($action)) {
@@ -80,7 +83,7 @@ if(!empty($action)) {
     }
 }
 
-$query = "SELECT cart.id, product.name, product.stock, cart.unit_price, (cart.unit_price * cart.desired_quantity) as subtotal, cart.desired_quantity
+$query = "SELECT cart.id, product.name, product.stock, cart.unit_price, cart.product_id, (cart.unit_price * cart.desired_quantity) as subtotal, cart.desired_quantity
           FROM Products as product JOIN Cart as cart on cart.product_id = product.id
           WHERE cart.user_id = :uid";
 
@@ -115,10 +118,16 @@ try {
             </tr>
         </thead>
         <tbody>
-        <?php foreach ($cart as $c) : ?>
+        <?php foreach ($cart as $c) : 
+            $sub_total = 0;    
+        ?>
             <tr>
-                <td><a href="product_details.php?id=<?php se($c, "id") ?>" ><?php se($c, "name"); ?></a></td>
-                <td><?php se($c, "unit_price"); ?></td>
+                <td><a href="product_details.php?id=<?php se($c, "product_id") ?>" ><?php se($c, "name"); ?></a></td>
+                <?php 
+                    $price = (int)se($c, "unit_price", 0, false);
+                    $price = cost_to_float($price);
+                ?>
+                <td>$<?php se($price, null, 0); ?></td>
                 <td>
                     <form method="POST">
                         <input type="hidden" name="cart_id" value="<?php se($c, "id"); ?>" />
@@ -127,9 +136,12 @@ try {
                         <input type="submit" class="btn btn-primary" value="Update Quantity" />
                     </form>
                 </td>
-                <?php $total += (int)se($c, "subtotal", 0, false); 
-                      $total_items += (int)se($c, "desired_quantity", 0, false); ?>
-                <td><?php se($c, "subtotal"); ?></td>
+                <?php $sub_total += (int)se($c, "subtotal", 0, false);
+                      $total += (int)se($c, "subtotal", 0, false); 
+                      $total_items += (int)se($c, "desired_quantity", 0, false); 
+                      $total_cost = cost_to_float($total);
+                      $sub_total = cost_to_float($sub_total); ?>
+                <td>$<?php se($sub_total, null, 0); ?></td>
                 <td>
                     <form method="POST">
                         <input type="hidden" name="cart_id" value="<?php se($c, "id"); ?>" />
@@ -144,16 +156,18 @@ try {
                 <td colspan="100%">No items in cart</td>
             </tr>
         <?php endif; ?>
+        <?php if (count($cart) != 0) : ?>
         <tr>
-            <td colspan="100%">Total: <?php se($total, null, 0); ?></td>
+            <td colspan="100%">Total: $<?php se($total_cost, null, 0); ?></td>
         </tr>
+        <?php endif; ?>
         </tbody>
     </table>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <form method="POST">
             <input type="hidden" name="action" value="clear" />
             <input type="submit" class="btn btn-danger" value="Clear Cart" />
-            <input type="submit" class="btn btn-warning" value="Proceed to Checkout(<?php se($total_items, null, 0); ?> Items)" />
+            <a class="btn btn-warning" href="checkout.php" >Proceed to Checkout(<?php se($total_items, null, 0); ?> Items)</a>
         </form>
     </div>
 </div>

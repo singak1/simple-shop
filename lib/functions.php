@@ -28,4 +28,5 @@ require(__DIR__. "/get_columns.php");
 require(__DIR__. "/input_map.php");
 require(__DIR__. "/save_data.php");
 require(__DIR__. "/update_products.php");
+require(__DIR__. "/cost_to_float.php");
 ?>
