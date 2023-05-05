@@ -3,7 +3,7 @@
 require_once(__DIR__ . "/db.php");
 //This is going to be a helper for redirecting to our base project path since it's nested in another folder
 //This MUST match the folder name exactly
-$BASE_PATH = '/project/';
+$BASE_PATH = '/project';
 //TODO 4: Flash Message Helpers
 //we moved the flash require higher so following functions have access to it
 require(__DIR__ . "/flash_messages.php");
@@ -28,4 +28,5 @@ require(__DIR__. "/get_columns.php");
 require(__DIR__. "/input_map.php");
 require(__DIR__. "/save_data.php");
 require(__DIR__. "/update_products.php");
+require(__DIR__. "/cost_to_float.php");
 ?>
