@@ -58,7 +58,7 @@ try{
     $shipping_country = $_POST['shipping_country'];
     $shipping_zip_postal_code = $_POST['shipping_zip_postal_code'];
 
-    if (!ctype_alnum($shipping_address)) {
+    if (!is_string($shipping_address)) {
         flash('Invalid shipping address format', 'warning');
         die(header('location: checkout.php'));
     }
@@ -83,7 +83,7 @@ try{
         die(header('location: checkout.php'));
     }
 
-    if (!is_numeric($shipping_zip_postal_code) || strlen($shipping_zip_postal_code) < 5) {
+    if (!is_string($shipping_zip_postal_code) || strlen($shipping_zip_postal_code) < 5) {
         flash('Invalid shipping zip/postal code format', 'warning');
         die(header('location: checkout.php'));
     }
