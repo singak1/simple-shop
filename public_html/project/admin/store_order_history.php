@@ -70,7 +70,7 @@ try {
 ?>
 
 <div class="container-fluid">
-    <h1>Purchase History</h1>
+    <h1>Shop Purchase History</h1>
     <?php if (count($orders) > 0): ?>
         <table class="table">
             <thead>
