@@ -63,7 +63,7 @@ try{
         die(header('location: checkout.php'));
     }
 
-    if (!empty($shipping_apt_suite_fl) && !ctype_alnum($shipping_apt_suite_fl)) {
+    if (!empty($shipping_apt_suite_fl) && !is_string($shipping_apt_suite_fl)) {
         flash('Invalid shipping apartment/suite/floor format', 'warning');
         die(header('location: checkout.php'));
     }
