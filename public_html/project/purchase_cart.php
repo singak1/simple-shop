@@ -26,16 +26,70 @@ try{
         $unit_price = (int)(se($row, "unit_price", 0, false));
         $product_price = ((int)(se($row, "product_price", 0, false)));
         $price_diff = ($unit_price - $product_price);
+        // as4234 05-05-23
+        //Validation for stock
         if($stock_diff < 0) {
             flash("There are only " .se($row, "product_stock", 0, false) ." ". se($row, "name", 0, false)." available, please update your cart!", "warning");
             die(header("Location: $BASE_PATH/cart.php"));
         }
+        // as4234 05-05-23
+        //Validation for price difference
         else if($price_diff != 0) {
             flash("Cart needs to be updated to reflect new prices for item, " . se($row, "name", 0, false), "warning");
             die(header("Location: $BASE_PATH/cart.php"));
         }
     }
+
+    // as4234 05-05-23
+    //Validation for payment method
+    $valid_payment_methods = array("cash", "mastercard", "visa", "amex");
+    $payment_method = strtolower($_POST['payment_method']);
+
+    if (!in_array($payment_method, $valid_payment_methods)) {
+        flash("Please choose a valid payment method", "warning");
+        die(header("Location: $BASE_PATH/checkout.php"));
+    }
+    // as4234 05-05-23
+    // Validate shipping address
+    $shipping_address = $_POST['shipping_address'];
+    $shipping_apt_suite_fl = $_POST['shipping_apt_suite_fl'];
+    $shipping_city = $_POST['shipping_city'];
+    $shipping_state_province = $_POST['shipping_state_province'];
+    $shipping_country = $_POST['shipping_country'];
+    $shipping_zip_postal_code = $_POST['shipping_zip_postal_code'];
+
+    if (!ctype_alnum($shipping_address)) {
+        flash('Invalid shipping address format', 'warning');
+        die(header('location: checkout.php'));
+    }
+
+    if (!empty($shipping_apt_suite_fl) && !ctype_alnum($shipping_apt_suite_fl)) {
+        flash('Invalid shipping apartment/suite/floor format', 'warning');
+        die(header('location: checkout.php'));
+    }
+
+    if (!is_string($shipping_city)) {
+        flash('Invalid shipping city format', 'warning');
+        die(header('location: checkout.php'));
+    }
+
+    if (!is_string($shipping_state_province)) {
+        flash('Invalid shipping state/province format', 'warning');
+        die(header('location: checkout.php'));
+    }
+
+    if (!is_string($shipping_country)) {
+        flash('Invalid shipping country format', 'warning');
+        die(header('location: checkout.php'));
+    }
+
+    if (!is_numeric($shipping_zip_postal_code) || strlen($shipping_zip_postal_code) < 5) {
+        flash('Invalid shipping zip/postal code format', 'warning');
+        die(header('location: checkout.php'));
+    }
+
     if ($balance >= $total_cost) {
+        //as4234 05-02-23
         //check out of date price and user can purchase the items
         $db->beginTransaction();
         $stmt = $db->prepare("SELECT max(id) as orderId FROM Orders");
@@ -122,6 +176,10 @@ try{
         $db->commit();
         header("Location: $BASE_PATH/order_confirmation.php");
     }
+}
+else {
+    flash("Insufficient Payment recieved, please try again with correct amount", "warning");
+    die(header("Location: $BASE_PATH/checkout.php"));
 }
 } catch (PDOException $e) {
     error_log(var_export($e, true));
